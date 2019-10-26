@@ -12,7 +12,7 @@ class player():
 
 #Main---------------------------------------------------------------------------
 pygame.init()
-win = pygame.display.set_mode((1000,800))
+win = pygame.display.set_mode((1000,600))
 pygame.display.set_caption("First Game")
 run=True
 clock =pygame.time.Clock()
