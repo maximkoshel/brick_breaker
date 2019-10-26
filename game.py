@@ -10,12 +10,12 @@ class player():
         self.velocity = 15
 
     def draw(self,WIN):
-        BLUE=(0,0,255)
+        self.BLUE=(0,0,255)
         if(self.x<=0):
             self.x=0
         if(self.x>=850):
             self.x=850
-        pygame.draw.rect(WIN,BLUE,(self.x,self.y,150,20))
+        pygame.draw.rect(WIN,self.BLUE,(self.x,self.y,150,20))
 #-------------------------------------------------------------------------------
 
 #Ball class---------------------------------------------------------------------
@@ -26,17 +26,21 @@ class ball():
         self.velocity = 30
 
     def draw(self,WIN):
-        BLUE=(0,255,0)
+        self.COLOR=(0,255,0)
         if(self.x<=0):
             self.x=0
         if(self.x>=850):
             self.x=850
-        pygame.draw.circle(WIN, BLUE,(self.x,self.y),10)
+        pygame.draw.circle(WIN, self.COLOR,(self.x,self.y),10)
 #-------------------------------------------------------------------------------
+
+#Update visualization-----------------------------------------------------------
 def updateGame():
     WIN.blit(BACKGROUND,(0,0))
     brick.draw(WIN)
     ball.draw(WIN)
+    pygame.display.update()
+#-------------------------------------------------------------------------------
 
 #Main---------------------------------------------------------------------------
 pygame.init()
