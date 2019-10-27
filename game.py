@@ -1,5 +1,10 @@
 import pygame
+import os
 import time
+
+BALLSPRITE =  [pygame.image.load(os.path.join('sprites/ball' ,'%s.png' % frame)) for frame in range(1, 59)]
+for i in range(0,58):
+    BALLSPRITE[i] = pygame.transform.scale(BALLSPRITE[i], (20, 20))
 #Player Class-------------------------------------------------------------------
 class player():
     def __init__(self,x,y,height,width) :
@@ -26,6 +31,7 @@ class ball():
         self.velocity = 6
         self.slope = 1
         self.diraction = "UP"
+        self.spriteCount = 1
 
     def draw(self,WIN):
         if (self.slope<0) and self.diraction == "UP":
@@ -44,12 +50,14 @@ class ball():
             self.y = self.y+10
         elif (self.slope == 0) and self.diraction == "UP":
             self.y = self.y-10
-
-
         self.x = int(self.x)
         self.y = int(self.y)
         self.COLOR=(0,255,0)
-        pygame.draw.circle(WIN, self.COLOR,(self.x,self.y),10)
+
+        if(self.spriteCount ==58):
+            self.spriteCount=0
+        self.spriteCount +=1
+        WIN.blit(BALLSPRITE[self.spriteCount//3] , (self.x,self.y))
 
 #-------------------------------------------------------------------------------
 def checkCollisionWithPlayer(ball,player):
@@ -121,7 +129,7 @@ def checkCollisionWithPlayer(ball,player):
                 ball.diraction = "UP"
 
         else:
-            print("Game over")
+            WIN.close()
 #Update visualization-----------------------------------------------------------
 def updateGame(WIN):
     WIN.blit(BACKGROUND,(0,0))
