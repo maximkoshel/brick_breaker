@@ -23,7 +23,7 @@ class ball():
     def __init__(self,x,y) :
         self.x=x
         self.y=y
-        self.velocity = 5
+        self.velocity = 6
         self.slope = 1
         self.diraction = "UP"
 
@@ -31,15 +31,21 @@ class ball():
         if (self.slope<0) and self.diraction == "UP":
             self.x =self.x -self.velocity
             self.y =  self.y -(self.slope*self.velocity*-1)
-        if (self.slope>0) and self.diraction == "UP":
+        elif (self.slope>0) and self.diraction == "UP":
             self.x =self.x + self.velocity
             self.y =  self.y -(self.slope*self.velocity)
-        if (self.slope<0) and self.diraction == "DOWN":
+        elif (self.slope<0) and self.diraction == "DOWN":
             self.x =self.x + self.velocity
             self.y =  self.y +(self.slope*self.velocity*-1)
-        if (self.slope>0) and self.diraction == "DOWN":
+        elif (self.slope>0) and self.diraction == "DOWN":
             self.x =self.x - self.velocity
             self.y =  self.y +(self.slope*self.velocity)
+        elif (self.slope == 0) and self.diraction == "DOWN":
+            self.y = self.y+10
+        elif (self.slope == 0) and self.diraction == "UP":
+            self.y = self.y-10
+
+
         self.x = int(self.x)
         self.y = int(self.y)
         self.COLOR=(0,255,0)
@@ -62,43 +68,56 @@ def checkCollision(ball,player):
         if(player.x<= ball.x <=player.x+150):
             point = ball.x - player.x
             if(0<=point<10):
-                ball.slope =  -1/4
+                ball.slope =  -0.3
+                ball.velocity = 13
                 ball.diraction = "UP"
             elif(10<=point<20):
-                ball.slope =  -1/3
+                ball.slope =  -0.5
+                ball.velocity = 10
                 ball.diraction = "UP"
             elif(20<=point<30):
-                ball.slope =  -1/2
+                ball.slope =  -0.8
+                ball.velocity = 8
                 ball.diraction = "UP"
             elif(30<=point<40):
                 ball.slope =  -1
+                ball.velocity = 6
                 ball.diraction = "UP"
             elif(40<=point<50):
                 ball.slope =  -2
+                ball.velocity = 5
                 ball.diraction = "UP"
             elif(50<=point<=60):
-                ball.slope =  -3
+                ball.slope =  -2.5
+                ball.velocity = 4
                 ball.diraction = "UP"
             elif(70<=point<80):
                 ball.slope =  0
+                ball.velocity = 6
                 ball.diraction = "UP"
             elif(80<=point<90):
-                ball.slope =  2
+                ball.slope =  2.5
+                ball.velocity = 4
                 ball.diraction = "UP"
             elif(100<=point<110):
-                ball.slope =  3
+                ball.slope =  2
+                ball.velocity = 4
                 ball.diraction = "UP"
             elif(110<=point<120):
                 ball.slope =  1
+                ball.velocity = 6
                 ball.diraction = "UP"
             elif(120<=point<130):
-                ball.slope =  1/2
+                ball.slope =  0.8
+                ball.velocity = 8
                 ball.diraction = "UP"
             elif(130<=point<140):
-                ball.slope =  1/3
+                ball.slope =  0.5
+                ball.velocity = 10
                 ball.diraction = "UP"
             elif(140<=point<=150):
-                ball.slope =  1/4
+                ball.slope =  0.3
+                ball.velocity = 13
                 ball.diraction = "UP"
 
         else:
