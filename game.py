@@ -52,7 +52,7 @@ class ball():
         pygame.draw.circle(WIN, self.COLOR,(self.x,self.y),10)
 
 #-------------------------------------------------------------------------------
-def checkCollision(ball,player):
+def checkCollisionWithPlayer(ball,player):
 #Check bounderies
     if(ball.x>=1000):
         ball.slope = ball.slope*-1
@@ -64,12 +64,12 @@ def checkCollision(ball,player):
         ball.slope = ball.slope*-1
         ball.diraction = "DOWN"
 #Check collision with player
-    if(ball.y>=570):
+    if(ball.y>=575):
         if(player.x<= ball.x <=player.x+150):
             point = ball.x - player.x
             if(0<=point<10):
                 ball.slope =  -0.3
-                ball.velocity = 13
+                ball.velocity = 12
                 ball.diraction = "UP"
             elif(10<=point<20):
                 ball.slope =  -0.5
@@ -117,7 +117,7 @@ def checkCollision(ball,player):
                 ball.diraction = "UP"
             elif(140<=point<=150):
                 ball.slope =  0.3
-                ball.velocity = 13
+                ball.velocity = 12
                 ball.diraction = "UP"
 
         else:
@@ -142,9 +142,9 @@ ball_com = ball(500,570)
 run=True
 CLOCK =pygame.time.Clock()
 while run :
-    CLOCK.tick(30)
+    CLOCK.tick(60)
     updateGame(WIN)
-    checkCollision(ball_com,brick)
+    checkCollisionWithPlayer(ball_com,brick)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] :
         brick.x -= brick.velocity
