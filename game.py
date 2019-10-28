@@ -23,9 +23,11 @@ class player():
         pygame.draw.rect(WIN,self.BLUE,(self.x,self.y,self.height,self.width))
 #-------------------------------------------------------------------------------
 class enemy ():
-    def __init__(self,x,y):
+    def __init__(self,x,y,width,height):
         self.x=x
         self.y=y
+        self.width=width
+        self.height = height
         self.hit=0
 
     def draw(self,WIN):
@@ -34,7 +36,7 @@ class enemy ():
             self.x=0
         if(self.x>=850):
             self.x=850
-        pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,1000,20))
+        pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,self.width,self.height))
 
 
 
@@ -69,11 +71,11 @@ class ball():
         self.y = int(self.y)
         self.COLOR=(0,255,0)
 
-        if(self.spriteCount ==58):
-            self.spriteCount=0
-        self.spriteCount +=1
-        WIN.blit(BALLSPRITE[self.spriteCount//3] , (self.x,self.y))
-
+        #if(self.spriteCount ==58):
+            #self.spriteCount=0
+        #self.spriteCount +=1
+        #WIN.blit(BALLSPRITE[self.spriteCount//3] , (self.x,self.y))
+        pygame.draw.circle(WIN,self.COLOR,(self.x,self.y),10)
 #-------------------------------------------------------------------------------
 def checkCollisionWithPlayer(ball,player):
 #Check bounderies
@@ -87,8 +89,8 @@ def checkCollisionWithPlayer(ball,player):
         ball.slope = ball.slope*-1
         ball.diraction = "DOWN"
 #Check collision with player
-    if(ball.y>=570):
-        if(player.x<= ball.x <=player.x+150):
+    if(ball.y>=560):
+        if(player.x<= ball.x +10<=player.x+150):
             point = ball.x - player.x
             if(0<=point<10):
                 ball.slope =  -0.3
@@ -147,19 +149,20 @@ def checkCollisionWithPlayer(ball,player):
             WIN.close()
 
 def checkCollisonWithEnemy(ball,enemy):
-    pointX = ball.x - enemy.x
-    if(enemy.x<=pointX<=enemy.x+1000)and(ball.y == enemy.y):
-        enemy.hit=1
-        ball.slope = ball.slope*-1
-        ball.diraction = "DOWN"
+    if(ball.y<=(enemy.y+enemy.height)):
+        if(enemy.x<=ball.x+10<=enemy.x+90):
+            enemy.hit=1
+            ball.slope = ball.slope*-1
+            ball.diraction = "DOWN"
 
 #Update visualization-----------------------------------------------------------
 def updateGame(WIN):
     WIN.blit(BACKGROUND,(0,0))
     brick.draw(WIN)
     ball_com.draw(WIN)
-    if(enemy.hit==0):
-        enemy.draw(WIN)
+    for i in range (enemies_number):
+        if(enemies[i].hit==0):
+            enemies[i].draw(WIN)
     pygame.display.update()
 #-------------------------------------------------------------------------------
 
@@ -171,15 +174,22 @@ BACKGROUND = pygame.image.load("background.jpg")
 
 brick = player(425,580,150,20)
 ball_com = ball(500,570)
-enemy = enemy(0,0)
+enemies_number = 9
+enemies = []
+space = 0
+i=0
+for i in range(enemies_number):
+    enemies.append(enemy(0 + space,0,90,20))
+    space +=100
 
 run=True
 CLOCK =pygame.time.Clock()
 while run :
-    CLOCK.tick(60)
+    CLOCK.tick(30)
     updateGame(WIN)
     checkCollisionWithPlayer(ball_com,brick)
-    checkCollisonWithEnemy(ball_com,enemy)
+    for i in range (enemies_number):
+        checkCollisonWithEnemy(ball_com,enemies[i])
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] :
         brick.x -= brick.velocity
