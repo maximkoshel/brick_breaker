@@ -20,8 +20,23 @@ class player():
             self.x=0
         if(self.x>=850):
             self.x=850
-        pygame.draw.rect(WIN,self.BLUE,(self.x,self.y,150,20))
+        pygame.draw.rect(WIN,self.BLUE,(self.x,self.y,self.height,self.width))
 #-------------------------------------------------------------------------------
+class enemy ():
+    def __init__(self,x,y):
+        self.x=x
+        self.y=y
+        self.hit=0
+
+    def draw(self,WIN):
+        self.COLOR=(255,255,255)
+        if(self.x<=0):
+            self.x=0
+        if(self.x>=850):
+            self.x=850
+        pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,1000,20))
+
+
 
 #Ball class---------------------------------------------------------------------
 class ball():
@@ -72,7 +87,7 @@ def checkCollisionWithPlayer(ball,player):
         ball.slope = ball.slope*-1
         ball.diraction = "DOWN"
 #Check collision with player
-    if(ball.y>=575):
+    if(ball.y>=570):
         if(player.x<= ball.x <=player.x+150):
             point = ball.x - player.x
             if(0<=point<10):
@@ -130,11 +145,21 @@ def checkCollisionWithPlayer(ball,player):
 
         else:
             WIN.close()
+
+def checkCollisonWithEnemy(ball,enemy):
+    pointX = ball.x - enemy.x
+    if(enemy.x<=pointX<=enemy.x+1000)and(ball.y == enemy.y):
+        enemy.hit=1
+        ball.slope = ball.slope*-1
+        ball.diraction = "DOWN"
+
 #Update visualization-----------------------------------------------------------
 def updateGame(WIN):
     WIN.blit(BACKGROUND,(0,0))
     brick.draw(WIN)
     ball_com.draw(WIN)
+    if(enemy.hit==0):
+        enemy.draw(WIN)
     pygame.display.update()
 #-------------------------------------------------------------------------------
 
@@ -146,6 +171,7 @@ BACKGROUND = pygame.image.load("background.jpg")
 
 brick = player(425,580,150,20)
 ball_com = ball(500,570)
+enemy = enemy(0,0)
 
 run=True
 CLOCK =pygame.time.Clock()
@@ -153,6 +179,7 @@ while run :
     CLOCK.tick(60)
     updateGame(WIN)
     checkCollisionWithPlayer(ball_com,brick)
+    checkCollisonWithEnemy(ball_com,enemy)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] :
         brick.x -= brick.velocity
