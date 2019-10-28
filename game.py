@@ -32,10 +32,6 @@ class enemy ():
 
     def draw(self,WIN):
         self.COLOR=(255,255,255)
-        if(self.x<=0):
-            self.x=0
-        if(self.x>=850):
-            self.x=850
         pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,self.width,self.height))
 
 
@@ -81,15 +77,13 @@ def checkCollisionWithPlayer(ball,player):
 #Check bounderies
     if(ball.x>=1000):
         ball.slope = ball.slope*-1
-
     if(ball.x<=0):
         ball.slope = ball.slope*-1
-
     if(ball.y<=0):
         ball.slope = ball.slope*-1
         ball.diraction = "DOWN"
 #Check collision with player
-    if(ball.y>=560):
+    if(ball.y>=565):
         if(player.x<= ball.x +10<=player.x+150):
             point = ball.x - player.x
             if(0<=point<10):
@@ -174,12 +168,11 @@ BACKGROUND = pygame.image.load("background.jpg")
 
 brick = player(425,580,150,20)
 ball_com = ball(500,570)
-enemies_number = 9
+enemies_number = 10
 enemies = []
-space = 0
-i=0
+space = 5
 for i in range(enemies_number):
-    enemies.append(enemy(0 + space,0,90,20))
+    enemies.append(enemy(0+space,0,90,20))
     space +=100
 
 run=True
