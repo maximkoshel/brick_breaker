@@ -9,13 +9,7 @@ pygame.mixer.music.load("music.mp3")
 pygame.mixer.music.play(-1,0.0)
 pygame.mixer.music.set_volume(0.2)
 
-
-#Adding ball sprite------------------------------------------------------------
-#BALLSPRITE =  [pygame.image.load(os.path.join('sprites/ball' ,'%s.png' % frame)) for frame in range(1, 59)]
-#for i in range(0,58):
-    #BALLSPRITE[i] = pygame.transform.scale(BALLSPRITE[i], (10, 10))
 #------------------------------------------------------------------------------
-
 
 def GetRandomColor():
     return random.randint(0,255)
@@ -92,12 +86,9 @@ class ball():
 
         self.x = int(self.x)
         self.y = int(self.y)
-        self.COLOR=(GetRandomColor(),GetRandomColor(),GetRandomColor())
+        self.COLOR=(255,255,255)
 
-        #if(self.spriteCount ==58):
-            #self.spriteCount=0
-        #self.spriteCount +=1
-        #WIN.blit(BALLSPRITE[self.spriteCount//3] , (self.x,self.y))
+
         pygame.draw.circle(WIN,self.COLOR,(self.x,self.y),5)
 #-------------------------------------------------------------------------------
 def checkCollisionWithPlayer(ball,player):
