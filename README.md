@@ -1,5 +1,7 @@
 # What I've learned
 
+* Working with GIT BASH - first time using to write this project
+
 * Random function 
 
 * Pygame library 
