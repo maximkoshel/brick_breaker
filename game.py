@@ -1,10 +1,18 @@
 import pygame
 import os
 import time
+import random
 
-BALLSPRITE =  [pygame.image.load(os.path.join('sprites/ball' ,'%s.png' % frame)) for frame in range(1, 59)]
-for i in range(0,58):
-    BALLSPRITE[i] = pygame.transform.scale(BALLSPRITE[i], (10, 10))
+#Adding ball sprite------------------------------------------------------------
+#BALLSPRITE =  [pygame.image.load(os.path.join('sprites/ball' ,'%s.png' % frame)) for frame in range(1, 59)]
+#for i in range(0,58):
+    #BALLSPRITE[i] = pygame.transform.scale(BALLSPRITE[i], (10, 10))
+#------------------------------------------------------------------------------
+
+
+def GetRandomColor():
+    return random.randint(0,255)
+
 #Player Class-------------------------------------------------------------------
 class player():
     def __init__(self,x,y,height,width) :
@@ -29,9 +37,13 @@ class enemy ():
         self.width=width
         self.height = height
         self.hit=0
+        r1 = GetRandomColor()
+        r2 = GetRandomColor()
+        r3  = GetRandomColor()
+        self.COLOR=(r1,r2,r3)
 
     def draw(self,WIN):
-        self.COLOR=(255,255,255)
+
         pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,self.width,self.height))
 
 
@@ -77,7 +89,7 @@ def checkCollisionWithPlayer(ball,player):
 #Check bounderies
     if(ball.x>=995):
         ball.slope = ball.slope*-1
-    if(ball.x<=-5):
+    if(ball.x<=5):
         ball.slope = ball.slope*-1
     if(ball.y<=5):
         ball.slope = ball.slope*-1
@@ -103,28 +115,36 @@ def checkCollisionWithPlayer(ball,player):
                 ball.velocity = 6
                 ball.diraction = "UP"
             elif(40<=point<50):
-                ball.slope =  -2
+                ball.slope =  -1.5
                 ball.velocity = 5
                 ball.diraction = "UP"
-            elif(50<=point<=60):
-                ball.slope =  -2.5
+            elif(50<=point<60):
+                ball.slope =  -2
                 ball.velocity = 4
                 ball.diraction = "UP"
+            elif(60<=point<70):
+                ball.slope =  -2.5
+                ball.velocity = 3
+                ball.diraction = "UP"
             elif(70<=point<80):
-                ball.slope =  0
+                ball.slope = 0
                 ball.velocity = 6
                 ball.diraction = "UP"
             elif(80<=point<90):
                 ball.slope =  2.5
-                ball.velocity = 4
+                ball.velocity = 3
                 ball.diraction = "UP"
-            elif(100<=point<110):
+            elif(90<=point<100):
                 ball.slope =  2
                 ball.velocity = 4
                 ball.diraction = "UP"
+            elif(100<=point<110):
+                ball.slope =  1.5
+                ball.velocity = 5
+                ball.diraction = "UP"
             elif(110<=point<120):
                 ball.slope =  1
-                ball.velocity = 6
+                ball.velocity = 10
                 ball.diraction = "UP"
             elif(120<=point<130):
                 ball.slope =  0.8
@@ -143,7 +163,7 @@ def checkCollisionWithPlayer(ball,player):
             main()
 def checkCollisonWithEnemy(ball,enemy):
     if(ball.y<=(enemy.y+enemy.height)):
-        if(enemy.x<=ball.x+10<=enemy.x+90):
+        if(enemy.x<=ball.x<=enemy.x+92):
             if(enemy.hit==0):
                 enemy.hit=1
                 ball.slope = ball.slope*-1
