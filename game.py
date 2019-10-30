@@ -3,6 +3,13 @@ import os
 import time
 import random
 
+#Inited pygame here so the music can play repeatedly----------------------------
+pygame.init()
+pygame.mixer.music.load("music.mp3")
+pygame.mixer.music.play(-1,0.0)
+pygame.mixer.music.set_volume(0.2)
+
+
 #Adding ball sprite------------------------------------------------------------
 #BALLSPRITE =  [pygame.image.load(os.path.join('sprites/ball' ,'%s.png' % frame)) for frame in range(1, 59)]
 #for i in range(0,58):
@@ -28,7 +35,7 @@ class player():
             self.x=0
         if(self.x>=850):
             self.x=850
-        pygame.draw.rect(WIN,self.BLUE,(self.x,self.y,self.height,self.width))
+        WIN.blit(PLAYER,(self.x,self.y))
 #-------------------------------------------------------------------------------
 class enemy ():
     def __init__(self,x,y,width,height):
@@ -37,13 +44,20 @@ class enemy ():
         self.width=width
         self.height = height
         self.hit=0
+        self.counter = 0
         r1 = GetRandomColor()
         r2 = GetRandomColor()
         r3  = GetRandomColor()
         self.COLOR=(r1,r2,r3)
-
     def draw(self,WIN):
 
+        self.counter +=1
+        if (self.counter>=30):
+            r1 = GetRandomColor()
+            r2 = GetRandomColor()
+            r3  = GetRandomColor()
+            self.COLOR=(r1,r2,r3)
+            self.counter=0
         pygame.draw.rect(WIN,self.COLOR,(self.x,self.y,self.width,self.height))
 
 
@@ -75,9 +89,10 @@ class ball():
             self.y = self.y+10
         elif (self.slope == 0) and self.diraction == "UP":
             self.y = self.y-10
+
         self.x = int(self.x)
         self.y = int(self.y)
-        self.COLOR=(0,255,0)
+        self.COLOR=(GetRandomColor(),GetRandomColor(),GetRandomColor())
 
         #if(self.spriteCount ==58):
             #self.spriteCount=0
@@ -96,19 +111,19 @@ def checkCollisionWithPlayer(ball,player):
         ball.diraction = "DOWN"
 #Check collision with player
     if(ball.y>=570):
-        if(player.x<= ball.x +10<=player.x+155):
+        if(player.x<= ball.x<=player.x+155):
             point = ball.x - player.x
             if(point<10):
                 ball.slope =  -0.3
-                ball.velocity = 12
+                ball.velocity = 11
                 ball.diraction = "UP"
             elif(10<=point<20):
                 ball.slope =  -0.5
-                ball.velocity = 10
+                ball.velocity = 9
                 ball.diraction = "UP"
             elif(20<=point<30):
                 ball.slope =  -0.8
-                ball.velocity = 8
+                ball.velocity = 7
                 ball.diraction = "UP"
             elif(30<=point<40):
                 ball.slope =  -1
@@ -144,19 +159,19 @@ def checkCollisionWithPlayer(ball,player):
                 ball.diraction = "UP"
             elif(110<=point<120):
                 ball.slope =  1
-                ball.velocity = 10
+                ball.velocity = 6
                 ball.diraction = "UP"
             elif(120<=point<130):
                 ball.slope =  0.8
-                ball.velocity = 8
+                ball.velocity = 7
                 ball.diraction = "UP"
             elif(130<=point<140):
                 ball.slope =  0.5
-                ball.velocity = 10
+                ball.velocity = 9
                 ball.diraction = "UP"
             elif(140<=point):
                 ball.slope =  0.3
-                ball.velocity = 12
+                ball.velocity = 11
                 ball.diraction = "UP"
 
         else:
@@ -183,11 +198,12 @@ def updateGame(WIN):
 
 #Main---------------------------------------------------------------------------
 def main():
-    global WIN,BACKGROUND,brick,ball_com,enemies,enemies_rows,enemies_number
-    pygame.init()
+
+    global PLAYER,WIN,BACKGROUND,brick,ball_com,enemies,enemies_rows,enemies_number
     WIN = pygame.display.set_mode((1000,600))
     pygame.display.set_caption("Brick Breaker")
     BACKGROUND = pygame.image.load("background.jpg")
+    PLAYER = pygame.image.load("player.png")
 
     brick = player(425,580,150,20)
     ball_com = ball(500,570)
@@ -205,7 +221,7 @@ def main():
     run=True
     CLOCK =pygame.time.Clock()
     while run :
-        CLOCK.tick(30)
+        CLOCK.tick(60)
         updateGame(WIN)
         checkCollisionWithPlayer(ball_com,brick)
         for i in range(enemies_rows):
