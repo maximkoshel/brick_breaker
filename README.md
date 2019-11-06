@@ -1,6 +1,6 @@
 # What I've learned
 
-* Working with GIT BASH - first time using to write this project
+* Working with GIT BASH
 
 * Random function 
 
